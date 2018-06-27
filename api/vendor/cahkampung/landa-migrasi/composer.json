@@ -1,0 +1,19 @@
+{
+    "name": "cahkampung/landa-migrasi",
+    "description": "Migrasi Database MySQL",
+    "keywords": ["database", "mysql"],
+    "license": "DBAD",
+    "authors": [{
+        "name": "Wahyu Agung Tribawono",
+        "email": "wahyuagung26@gmail.com"
+    }],
+    "type": "library",
+    "require": {
+        "php": ">=5.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Cahkampung\\": "src/"
+        }
+    }
+}
