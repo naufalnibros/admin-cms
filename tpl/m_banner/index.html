@@ -1,0 +1,139 @@
+<div ng-controller="kirimanCtrl">
+    <div class="container-fluid">
+        <div class="row" ng-show="!is_edit">
+            <div class="col-md-12" st-pipe="callServer" st-table="displayed">
+                <div class="panel panel-blank">
+                    <div class="panel-heading">
+                        <h2 class="text-left float-left">
+                            Master Banner
+                        </h2>
+                    </div>
+                    <div class="panel-body">
+                        <div class="x-header">
+                            <div class="row">
+                                <form class="form-horizontal form-validation" name="landaform">
+                                    <div class="col-sm-12 ">
+
+                                        <button class="btn btn-primary pull-right" ng-click="create()" ng-hide="is_view" style="">
+                                            <i class="glyphicon glyphicon-plus">
+                                            </i>
+                                            Buat Banner
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+
+                                    <th style="width: 10%;"> Dibuat Oleh</th>
+                                    <th style="width: 10%;"> Tanggal Upload</th>
+                                    <th style="width: 40%;"> Caption</th>
+                                    <th> Gambar</th>
+                                    <th style="width: 10%;"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-dblclick="view(row)" ng-repeat="row in displayed">
+
+                                    <td> {{row.user_nama}} </td>
+                                    <td>
+                                        <span ng-if="row.tanggal_upload != undefined"> {{row.tanggal_upload*1000 | date:'dd MMM yyyy HH:mm'}}</span>
+                                    </td>
+                                     <td> {{row.posisi}} </td>
+                                    <td>
+                                        <img ng-if="row.gambar != undefined" id="myImg" ng-src="{{row.path}}" alt="" style="max-width:200px;max-height:200px;">
+                                    </td>
+
+                                    <td class="text-right">
+                                        <button class="btn  btn-primary btn-table" ng-click="update(row)" title="Edit">
+                                            <i class="glyphicon glyphicon-pencil">
+                                            </i>
+                                        </button>
+                                        <button class="btn  btn-danger btn-table" ng-click="delete(row)" ng-if="row.created_by == user.id" title="Hapus">
+                                            <i class="glyphicon glyphicon-trash">
+                                            </i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="table-pagination" st-items-by-page="10" st-pagination="" st-template="tpl/blocks/pagination.custom.html">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" ng-show="is_edit">
+            <div class="col-md-12">
+                <div class="panel panel-blank">
+                    <div class="panel-heading">
+                        <h2 class="text-left float-left">
+
+                        </h2>
+                    </div>
+                    <div class="panel-body">
+                        <form class="form-horizontal form-validation " name="landaform" novalidate="">
+                            <div class="col-md-6">
+                                <div class="form-group form-group-sm">
+                                    <label class="col-sm-2 text-form ">
+                                        Caption
+                                    </label>
+                                    <div class="col-sm-10">
+                                        <input autofocus="" class="x-form w100" ng-disabled="is_view" ng-model="form.posisi" type="text">
+                                    </div>
+                                </div>
+                                <div class="form-group form-group-sm">
+                                    <div class="form-group form-group-sm" style="max-height: 500px;max-width: 500px;overflow: hidden; margin-left: 18%;">
+                                        <img class="img-responsive img-thumbnail" id="myImg" ng-click="viewGambar(form)" ng-if="form.gambar.base64 != undefined" src="data:{{form.gambar.filetype}};base64,{{form.gambar.base64}}"
+                                        />
+                                        <img class="img-responsive img-thumbnail" id="myImg" ng-click="viewGambar(form)" ng-if="form.gambar.base64 == undefined" src="{{form.gambar.path}}"
+                                        />
+                                        <img class="img-responsive img-thumbnail" id="myImg"  ng-if="form.gambar" src="{{form.gambar}}"/>
+                                    </div>
+                                    <div class="form-group form-group-sm" style="text-align: center" ng-if="!is_view">
+                                        <label for="file-upload" class="custom-file-upload bg-primary" style="padding: 6px 20px;">
+                                            <i class="fa fa-cloud-upload"></i> Upload Gambar
+                                        </label>
+                                        <div>
+                                            <input id="file-upload" base-sixty-four-input="" ng-model="form.gambar" type="file" accept="image/*" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 alert alert-info">
+                              <i>
+                                Gunakan ukuran gambar <br>
+                                I.  1300px x 600px <br>
+                                II. 800px x 366px
+                              </i>
+                            </div>
+
+                        </form>
+                    </div>
+
+                    <div class="panel-footer">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="float-right">
+                                    <button class="btn btn-default" ng-click="cancel()">
+                                        <i class="glyphicon glyphicon-arrow-left">
+                                        </i>
+                                        Batal
+                                    </button>
+                                    <button autosave="" class="btn btn-primary" ng-click="save(form)" ng-hide="is_view">
+                                        <i class="glyphicon glyphicon-floppy-save">
+                                        </i>
+                                        Simpan
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

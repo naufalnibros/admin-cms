@@ -1,0 +1,153 @@
+<div ng-controller="lviewCtrl">
+    <div class="container-fluid">
+        <div class="row" ng-show="true">
+            <div class="col-md-12 container-fluid">
+                <div class="panel panel-blank">
+                    <div class="panel-heading">
+                        <h2 class="text-left float-left">
+                            Laporan View Artikel Harian
+                        </h2>
+                    </div>
+                    <!--<div class="panel-body" style="padding: 0px">-->
+                    <div class="panel-body" style="padding: 20px">
+                        <div class="x-header">
+                            <div class="row">
+                                <div class="col-sm-12 ">
+                                    <div class="row">
+
+                                        <!--mulai-->
+                                        <form name='landaform'>
+                                            <div class="col-sm-6 text-center">
+                                                <div class="form-group">
+                                                    <label class="col-sm-1">
+                                                        Bulan
+                                                    </label>
+
+                                                    <div class="col-sm-3">
+                                                        <select class="x-form w10" ng-model="pilihbulan">
+                                                            <option value="">
+                                                                Pilih Bulan
+                                                            </option>
+                                                            <option ng-repeat="val in bulan" value="{{val.val}}">
+                                                                {{ val.nama }}
+                                                            </option>
+                                                        </select>
+                                                    </div>
+
+                                                    <label class="col-sm-1">
+                                                        Tahun
+                                                    </label>
+
+                                                    <div class="col-sm-3">
+                                                        <select class="x-form w10" ng-model="pilihtahun">
+                                                            <option value="">
+                                                                Pilih Tahun
+                                                            </option>
+                                                            <option ng-repeat="val in tahun" value="{{val}}">
+                                                                {{ val }}
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6" style="text-align:right">
+
+                                                <button class="btn btn-primary" ng-click="lihatData(pilihbulan, pilihtahun)" type="button">
+                                                    <i class=" glyphicon glyphicon-eye-open">
+                                                    </i>
+                                                    Tampilkan Data
+                                                </button>
+
+                                                <button class="btn btn-success" ng-click="exportData()" type="button">
+                                                    <i class=" glyphicon glyphicon-export">
+                                                    </i>
+                                                    Export Excel
+                                                </button>
+
+                                            </div>
+                                            <!--akhir-->
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            </form>
+                        </div>
+
+                        <br>
+                        <div id="exportlaporan" ng-if='lihat' style='text-align:center' class="table table-reponsive">
+                            <h4> Laporan Penulis Harian</h4>
+                            <table class="table table-bordered table-stripped table-hover" style="max-width:1700px">
+                                <tr>
+                                    <th rowspan="2"> Penulis </th>
+                                    <th colspan="{{ total_day+1 }}">
+                                        <span ng-repeat="val in bulan" ng-if="val.val == pilihbulan">
+                                            {{ val.nama }}
+                                        </span>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th ng-repeat='hari in day'> {{hari}} </th>
+                                </tr>
+                                <tr ng-repeat='person in penulis'>
+                                    <td style='text-align:left'>
+                                        {{ person.penulis}}
+                                    </td>
+                                    <td ng-repeat='val in person.artikel track by $index' type="button" data-toggle="modal" data-target="#myModal" ng-click="detailView(person.id, $index+1, pilihbulan, pilihtahun)">
+                                        <b ng-if="val > 0">{{ val }} </b>
+                                        <span ng-if="val == 0">{{ val }}</span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <!-- Modal -->
+                        <div class="modal fade" id="myModal" role="dialog">
+                            <div class="modal-dialog modal-lg">
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">View Artikel Harian Penulis</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="col-md-6">
+                                            <table cellpadding="10">
+                                                <tr>
+                                                    <td style="width:150px">Penulis</td>
+                                                    <td>:</td>
+                                                    <td>{{ modal_user}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Tanggal</td>
+                                                    <td>:</td>
+                                                    <td>{{ modal_tanggal | date : "dd MMM yyyy"}}</td>
+                                                </tr>
+                                            </table>   <br>
+                                        </div>
+                                        <table class="table table-hover table-stripped">
+                                            <tr>
+                                                <th style="width:40px">No.</th>
+                                                <th>Judul Artikel</th>
+                                                <th style="width:60px">View</th>
+                                            </tr>
+                                            <tr ng-repeat="val in modal_laporan">
+                                                <td>{{ $index+1 }}</td>
+                                                <td>{{ val.judul }}</td>
+                                                <td>{{ val.view }}</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <!-- end of Modal -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>|

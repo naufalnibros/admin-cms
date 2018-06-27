@@ -1,0 +1,218 @@
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div id="logo-box">
+        <div class="logo-size">
+            <img class="org-img"  id="appLogoImgID" src="img/logo.png"/>
+        </div>
+    </div>
+    <div class="top-header">
+        <div class="float-left" style="height: 69px;">
+            <h1 class="left-150 title_header">
+                Content Management Systems
+            </h1>
+        </div>
+        <div class="float-right menu-atas" style="padding-top: 20px; margin-right: 45px ">
+            <ul class="nav navbar-nav navbar-right">
+
+                <li class="dropdown">
+                    <a aria-expanded="false" aria-haspopup="true" class="dropdown-toggle white" data-toggle="dropdown" role="button">
+                        {{user.nama}}
+                        <span class="caret">
+                        </span>
+                    </a>
+                    <ul class="dropdown-menu" style="min-width:200px;">
+                        <li>
+                            <a ui-sref="master.setting">
+                                Pengaturan Website
+                            </a>
+                        </li>
+                        <li>
+                            <a ui-sref="master.userprofile">
+                                Edit Profile
+                            </a>
+                        </li>
+                        <li>
+                            <a ng-click="logout()">
+                                <i class="glyphicon glyphicon-off ">
+                                </i>
+                                Logout
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container-fluid bg-white">
+        <div class="navbar-header">
+            <button aria-controls="navbar" aria-expanded="false" class="navbar-toggle collapsed" data-target="#navbar" data-toggle="collapse" type="button">
+                <span class="sr-only">
+                    Toggle navigation
+                </span>
+                <span class="icon-bar">
+                </span>
+                <span class="icon-bar">
+                </span>
+                <span class="icon-bar">
+                </span>
+            </button>
+        </div>
+        <div class="navbar-collapse collapse " id="navbar">
+            <ul class="nav navbar-nav left-125">
+                <li>
+                    <a aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" role="button" ui-sref="site.dashboard">
+                        <i class="glyphicon glyphicon-home icon text-info-lter">
+                        </i>
+                        Dashboard
+                    </a>
+                </li>
+                <li class="dropdown" ng-show="user.akses.master_roles||user.akses.master_user||user.akses.master_kategori || user.akses.master_banner ">
+                    <a aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" role="button">
+                        <i class="glyphicon glyphicon-th-large icon text-info-lter">
+                        </i>
+                        Master
+                        <span class="caret">
+                        </span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li ng-show="user.akses.master_roles">
+                            <a ui-sref="master.roles">
+                                <i class="glyphicon glyphicon-menu-right">
+                                </i>
+                                Hak Akses
+                            </a>
+                        </li>
+                        <li ng-show="user.akses.master_user">
+                            <a ui-sref="master.user">
+                                <i class="glyphicon glyphicon-menu-right">
+                                </i>
+                                Pengguna
+                            </a>
+                        </li>
+                        <li ng-show="user.akses.master_kategori">
+                            <a ui-sref="master.kategori">
+                                <i class="glyphicon glyphicon-menu-right">
+                                </i>
+                                Kategori
+                            </a>
+                        </li>
+                          <li ng-show="user.akses.master_banner">
+                            <a ui-sref="master.banner">
+                                <i class="glyphicon glyphicon-menu-right">
+                                </i>
+                                Banner
+                            </a>
+                        </li>
+                        <li ng-show="user.akses.master_halaman">
+                            <a ui-sref="master.halaman">
+                                <i class="glyphicon glyphicon-menu-right">
+                                </i>
+                                Halaman
+                            </a>
+                        </li>
+                         <li ng-show="user.akses.master_topnews">
+                            <a ui-sref="master.topnews">
+                                <i class="glyphicon glyphicon-menu-right">
+                                </i>
+                                Top News
+                            </a>
+                        </li>
+                          <!-- <li ng-show="user.akses.master_sosmed">
+                            <a ui-sref="master.sosmed">
+                                <i class="glyphicon glyphicon-menu-right">
+                                </i>
+                                Link Sosial Media
+                            </a>
+                        </li>
+     -->
+                    </ul>
+                </li>
+               <!-- <li  ng-if="user.akses.master_kiriman">
+                    <a aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" role="button" ui-sref="master.kiriman">
+                        <i class="glyphicon glyphicon-picture icon text-info-lter">
+                        </i>
+                        Kiriman
+                    </a>
+                </li> -->
+                <li ng-if="user.akses.master_artikel">
+                    <a aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" role="button" ui-sref="master.artikel">
+                        <i class="glyphicon glyphicon-th-list icon text-info-lter">
+                        </i>
+                        Artikel
+                    </a>
+                </li>
+                 <!-- <li ng-if="user.akses.master_infokajian">
+                    <a aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" role="button" ui-sref="master.infokajian">
+                        <i class="glyphicon glyphicon-bell icon text-info-lter">
+                        </i>
+                       Info Kajian
+                    </a>
+                </li> -->
+                 <li ng-if="user.akses.master_produk">
+                    <a aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" role="button" ui-sref="master.produk">
+                        <i class="glyphicon glyphicon-tasks icon text-info-lter">
+                        </i>
+                       Produk
+                    </a>
+                </li>
+                <li class="dropdown" ng-show="user.akses.laporan_artikel">
+                    <a aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" role="button">
+                        <i class="glyphicon glyphicon-send icon text-info-lter">
+                        </i>
+                        Laporan
+                        <span class="caret">
+                        </span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li ng-show="user.akses.laporan_artikel">
+                            <a ui-sref="laporan.artikel">
+                                <i class="glyphicon glyphicon-menu-right">
+                                </i>
+                                Jumlah Artikel Penulis / Hari
+                            </a>
+                        </li>
+                        <li ng-show="user.akses.laporan_view">
+                            <a ui-sref="laporan.view">
+                                <i class="glyphicon glyphicon-menu-right">
+                                </i>
+                                Page View Penulis / Hari
+                            </a>
+                        </li>
+                        <!-- <li>
+                            <a>
+                                <i class="glyphicon glyphicon-menu-right">
+                                </i>
+                                Transaksi 2
+                            </a>
+                        </li> -->
+                    </ul>
+                </li>
+                <!-- <li class="dropdown">
+                    <a aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" role="button">
+                        <i class="glyphicon glyphicon-print icon text-info-lter">
+                        </i>
+                        Laporan
+                        <span class="caret">
+                        </span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a>
+                                <i class="glyphicon glyphicon-menu-right">
+                                </i>
+                                Laporan 1
+                            </a>
+                        </li>
+                        <li>
+                            <a>
+                                <i class="glyphicon glyphicon-menu-right">
+                                </i>
+                                Laporan 2
+                            </a>
+                        </li>
+                    </ul>
+                </li> -->
+            </ul>
+
+        </div>
+    </div>
+</nav>

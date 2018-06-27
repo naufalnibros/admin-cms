@@ -1,0 +1,15 @@
+vendor/
+/nbproject/private/
+.env
+file/
+
+img/logo.*
+
+img/produk/*.jpg
+img/produk/*.JPG
+
+img/banner/*.jpg
+img/banner/*.JPG
+
+img/artikel/*.jpg
+img/artikel/*.JPG

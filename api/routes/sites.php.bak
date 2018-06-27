@@ -1,0 +1,155 @@
+<?php
+$app->get('/', function ($request, $responsep) {
+
+});
+
+$app->get('/site/session', function ($request, $response) {
+    if (isset($_SESSION['user']['id'])) {
+        return successResponse($response, $_SESSION);
+    }
+    return unprocessResponse($response, ['undefined']);
+})->setName("session");
+
+$app->post('/site/login', function ($request, $response) {
+    $params = $request->getParams();
+    $sql    = $this->db;
+
+    $username = isset($params['username']) ? $params['username'] : '';
+    $password = isset($params['password']) ? $params['password'] : '';
+
+    $model = $sql->select("m_pengguna.*,m_pengguna_akses.akses")
+        ->from("m_pengguna")
+        ->where("username", "=", $username)
+        ->andWhere("password", "=", sha1($password))
+        ->leftJoin("m_pengguna_akses", "m_pengguna_akses.id = m_pengguna.m_pengguna_akses_id")
+        ->find();
+
+    if (!empty($model)) {
+        $_SESSION['user']['id']                  = $model->id;
+        $_SESSION['user']['username']            = $model->username;
+        $_SESSION['user']['nama']                = $model->nama;
+        $_SESSION['user']['m_pengguna_akses_id'] = $model->m_pengguna_akses_id;
+        $_SESSION['user']['akses']               = json_decode($model->akses);
+
+        return successResponse($response, $_SESSION);
+    }
+    return unprocessResponse($response, ['Authentication Systems gagal, username atau password Anda salah.']);
+})->setName("login");
+
+$app->get('/site/logout', function () {
+    session_destroy();
+})->setName("logout");
+
+$app->get('/site/getTahun', function ($request, $response) {
+    $year=date("Y");
+    $tahun=[];
+    
+    for($i=4; $i>0; --$i){
+        
+        --$year;
+        array_push($tahun, intval($year));
+    }
+    
+    $koleksi_bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+    $bulan = []; 
+    $no=0;
+    foreach($koleksi_bulan as $value){
+        $bulan[$no]['val'] = $no+1;
+        $bulan[$no]['nama'] = $value;
+        $no++;
+    }
+
+    return successResponse($response, ['tahun' => $tahun, 'bulan' => $bulan]);
+});
+
+$app->get('/site/chart/{bulan}/{tahun}', function ($request, $response) {
+    $bulan = intval($request->getAttribute('bulan'));
+    $tahun = intval($request->getAttribute('tahun'));
+    
+    $db = new Cahkampung\Landadb(Db());
+    
+    //dapatkan jumlah hari dalam bulan ini
+    $last  = new Datetime($tahun . '-' . $bulan . '-01'); 
+    $last->modify('last day of this month'); 
+    $last_day = $last->format('d');
+    
+    $hari = [];
+    $jumlah = [];
+    for($val=1; $val<=$last_day; $val++){
+        $date = new Datetime($tahun . '-' . $bulan . '-' .$val);
+        $this_day = strtotime($date->format('Y-m-d'));
+        
+        $model = $db->select("COUNT(id) as view")
+                    ->from('views')
+                    ->where('tanggal', '=', $this_day)
+                    ->find();
+
+        array_push($jumlah, $model->view);
+        array_push($hari, $val);
+    }
+
+    return successResponse($response, ['hari' => $hari, 'jumlah' => $jumlah]);
+});
+
+$app->get('/site/trending', function ($request, $response) {
+    $db = new Cahkampung\Landadb(Db());
+    $trending = $db->select("COUNT(artikel.judul) as view, artikel.judul")
+            ->from('artikel')
+            ->join("left join", 'views', 'artikel.id = views.artikel_id')
+            ->groupBy('artikel.judul')
+            ->orderBy('artikel.judul DESC')
+            ->limit(10)
+            ->findAll();
+    
+    return successResponse($response, $trending);
+});
+
+/* API Detail Artikel */
+$app->get('/site/detailArtikel/{alias}', function ($request, $response) {
+    $db = $this->db;
+    $alias   = $request->getAttribute('alias');
+
+    $model = $db->select("*")
+            ->from("artikel")
+            ->where("alias", "=", $alias)
+            ->find();
+
+//    render('nilai', ["diklat" => $diklat]);
+    return successResponse($response, $model);
+});
+
+/* API List kategori */
+$app->get('/site/kategori', function ($request, $response) {
+    $db = $this->db;
+
+    $model = $db->select("*")
+            ->from("kategori")
+            ->findAll();
+
+    return successResponse($response, $model);
+});
+//
+///* API pencarian berdasarkan kategori */
+//$app->get('/site/kategori/{kategori}', function ($request, $response) {
+//    $db = $this->db;
+//
+//   $alias   = $request->getAttribute('alias');
+//
+//    $model = $db->select("*")
+//            ->from("artikel")
+//            ->where("alias", "=", $alias)
+//            ->find();
+//    return successResponse($response, $model);
+//});
+
+/* API Pencarian Berita */
+$app->get('/site/kategori', function ($request, $response) {
+    $db = $this->db;
+
+    $model = $db->select("*")
+            ->from("kategori")
+            ->findAll();
+
+//    render('nilai', ["diklat" => $diklat]);
+    return successResponse($response, $model);
+});

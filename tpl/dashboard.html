@@ -1,0 +1,149 @@
+<style type="text/css" media="screen">
+    .btn-group>.btn:first-child {
+    margin-left: 3px;
+    margin-bottom: 6px;
+     }
+</style>
+<div ng-controller="dashboardCtrl">
+    <div class="container-fluid">
+        <div class="row">
+            <!-- awal -->
+            <div class="col-md-8" ng-show="!is_edit">
+                <div class="panel panel-blank">
+                    <div class="panel-heading">
+                        View Traffic Website
+                        <div style="float:right">
+                            <select ng-model="thismonth" ng-change='getChart(thismonth, thisyear)'>
+                                <option value="{{bulan.val}}" selected> {{sekarang}} </option>
+                                <option value="" disabled></option>
+                                <option ng-repeat="val in bulan" value="{{val.val}}">{{val.nama}}</option>
+                            </select>
+                            <select ng-model="thisyear" ng-change='getChart(thismonth, thisyear)'>
+                                <option value="{{xyear + 1}}"> {{xyear + 1}} </option>
+                                <option value="" selected> {{xyear}} </option>
+                                <option ng-repeat="val in tahun" value="{{val}}"> {{val}} </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <canvas chart-click="onClick" chart-data="data" chart-dataset-override="datasetOverride" chart-labels="labels" chart-options="options" chart-series="series" class="chart chart-line" id="line">
+                        </canvas>
+                    </div>
+                </div>
+            </div>
+            <!-- akhir -->
+            <!-- awal  -->
+            <div class="col-md-4" style="height:500px" ng-show="!is_edit">
+                <div class="panel panel-blank">
+                    <div class="panel-heading">
+                        Most Viewed Article
+                    </div>
+                    <div class="panel-body">
+                        <table class='table table-bordered table-hover table-striped' width="100%">
+                            <tr>
+                                <th width="5%">No.</th>
+                                <th width="70%">Judul Artikel</th>
+                                <th>View</th>
+                            </tr>
+                            <tr ng-repeat="val in trending" >
+                                
+                                    <td>{{$index+1}}</td>
+                                    <td>
+                                        <a href="http://www.dilarangbego.com/{{val.created_at*1000 | date:'y/MM/dd'}}/{{val.alias}}" target="_blank">
+                                            {{val.judul}}
+                                        </a>
+                                    </td>
+                                    <td><center>{{val.view}}</td>
+                                
+                            </tr>
+                        </table>
+                        <!-- <canvas chart-data="datadoughnut" chart-labels="labelsdoughnut" class="chart chart-doughnut" id="doughnut"></canvas> -->
+                    </div>
+                </div>
+            </div>
+            <!-- akhir -->
+            <!-- Awal -->
+            <!-- <div class="col-md-6">
+                <div class="panel panel-blank">
+                    <div class="panel-heading">
+                        Dashboard
+                    </div>
+                    <div class="panel-body">
+                        <canvas chart-data="databar" chart-labels="labelbar" chart-series="series" class="chart chart-bar" id="bar">
+                        </canvas>
+                    </div>
+                </div>
+            </div> -->
+            <!-- Akhir -->
+            <!-- Awal -->
+            <!-- <div class="col-md-6">
+                <div class="panel panel-blank">
+                    <div class="panel-heading">
+                        Dashboard
+                    </div>
+                    <div class="panel-body">
+                        <canvas chart-data="datahorisontal" chart-labels="labelshorisontal" class="chart-horizontal-bar" id="base">
+                        </canvas>
+                    </div>
+                </div>
+            </div> -->
+            <!-- Akhir -->
+            <div class="row" ng-show="is_edit">
+                <div class="col-md-12">
+                    <div class="panel panel-blank"> 
+                        <div class="panel-body">
+                            <form class="form-horizontal form-validation" name="landaform">
+                                <div class="col-sm-9" style="background-color: #f6f6f6;">
+                                    <div class="form-group form-group-sm">                                
+                                    </div>
+                                    <div class="form-group form-group-sm"> 
+                                            Judul :
+                                            <input class="x-form w80" ng-change="UrlParse(form.judul)" ng-model="form.judul" placeholder="" type="text" />
+                                        <div text-angular="text-angular" name="htmlcontent" ng-model="form.content" ta-disabled='disabled' style="margin-top: 5px;"></div>                    
+                                    </div>
+                                </div>
+                                <div class="col-sm-3" style="right: 10px;left: 10px;background-color: #f6f6f6;height: 500px">
+                                    <div class="btn-group pull-right" role="group" style="margin-top: 15px;margin-right: 4px;">
+                                        <button class="btn btn-default" ng-click="cancel()"     style="width: 90px">
+                                            <i class="glyphicon glyphicon-arrow-left">
+                                            </i>
+                                            Kembali
+                                        </button>
+                                        <button class="btn btn-info" ng-click="save_draft(form)" ng-disabled="landaform.$invalid" ng-hide="is_view" style="width: 100px" >
+                                            <i class="glyphicon glyphicon-send">
+                                            </i>
+                                            Simpan Draft
+                                        </button>
+                                        <button class="btn btn-primary" ng-click="save(form)" ng-disabled="landaform.$invalid" ng-hide="is_view" style="width: 79px" >
+                                            <i class="glyphicon glyphicon-save">
+                                            </i>
+                                            Simpan
+                                        </button>
+                                    </div>
+                                    <div class="form-group form-group-sm">
+                                        <label class="col-sm-12 text-form">
+                                            Penulis
+                                        </label>
+                                        <div class="col-sm-12">
+                                            <input class="form-control" ng-disabled="is_view" ng-model="form.creator" type="text" style="height: 25px">
+                                            </input>
+                                        </div>
+                                    </div>
+                                    <div class="form-group form-group-sm">
+                                        <label class="col-sm-12 text-form">
+                                            View
+                                        </label>
+                                        <div class="col-sm-12">
+                                            <input class="form-control" ng-disabled="is_view" ng-model="form.view" type="text" style="height: 25px">
+                                            </input>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

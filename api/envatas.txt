@@ -1,0 +1,31 @@
+SITE_URL = https://penulis.madawabalihotel.com/api/
+SITE_IMG = https://penulis.madawabalihotel.com/img/
+ARTIKEL  = https://penulis.madawabalihotel.com/
+IMG_PATH = app/img/
+
+DB_HOST=localhost
+DB_USER=pmauser
+DB_PASS=N64HR52Y4Q3NVNMS
+DB_NAME=wajibbaca
+DB_CHARSET=utf8
+
+CREATED_USER = created_by
+CREATED_TIME = created_at
+CREATED_TYPE = int
+
+MODIFIED_USER = modified_by
+MODIFIED_TIME = modified_at
+MODIFIED_TYPE = int 
+
+DISPLAY_ERRORS = true
+
+APP_DEBUG = test
+
+resize_image_width_small = 527
+resize_image_height_small = 352
+
+resize_image_width_big = 750
+resize_image_height_big = 400
+
+youtube_width = 750
+youtube_height = 500

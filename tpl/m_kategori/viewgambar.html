@@ -1,0 +1,26 @@
+<div class="modal-header">
+    <div class="row">
+        <div class="col-xs-9">
+            <div class="modal-title">
+                <h4 style="margin-top: 3px">Gambar</b></h4>
+            </div>
+        </div>
+        <div class="col-xs-3" align="right">
+            <button ng-click="close()" title="Cancel"  class="btn btn-rounded btn btn-icon btn-default"><i class="glyphicon glyphicon-remove"></i></button>
+        </div>
+    </div>
+</div>
+<div class="modal-body" >
+    <div class="row">
+        <div class="col-xs-12">
+            <div>
+                <img style="max-width: 100%" ng-if="formmodal.gambar.base64 != undefined" src="data:{{formmodal.gambar.filetype}};base64,{{formmodal.gambar.base64}}" />
+                <img style="max-width: 100%" ng-if="formmodal.gambar.base64 == undefined" src="{{formmodal.gambar.path}}" />
+            </div>
+        </div>
+    </div>
+</div>
+<!--</div>-->
+<!--<div class="modal-footer">                  
+    <button class="btn btn-danger" ng-disabled="formmodal.keterangan == undefined" ng-click="save(formmodal)"><i class="fa fa-minus-circle"></i> Tolak Pendaftaran</button>
+</div>-->
